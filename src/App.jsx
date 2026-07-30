@@ -321,6 +321,8 @@ function AppContent({ musicOn, setMusicOn }) {
                 alt="Глеб и Дарья"
                 width="720"
                 height="1280"
+                loading="lazy"
+                decoding="async"
               />
             </figure>
             <div className="welcome-copy">
@@ -394,12 +396,16 @@ function AppContent({ musicOn, setMusicOn }) {
               alt="Территория и архитектура Wine Time Restaurant"
               width="1138"
               height="1280"
+              loading="lazy"
+              decoding="async"
             />
             <img
               src={venueInterior}
               alt="Интерьер и сад Wine Time Restaurant"
               width="1024"
               height="1280"
+              loading="lazy"
+              decoding="async"
             />
           </div>
           <div className="venue-actions reveal">
@@ -452,6 +458,8 @@ function AppContent({ musicOn, setMusicOn }) {
               alt="Примеры образов и тканей для свадебного дресс-кода"
               width="1024"
               height="1536"
+              loading="lazy"
+              decoding="async"
             />
           </figure>
         </div>

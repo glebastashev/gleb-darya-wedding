@@ -10,9 +10,15 @@
   - `qa/implementation-hero-1280x720.png`
   - `qa/implementation-envelope-mobile.png`
   - `qa/implementation-hero-mobile.png`
+  - `qa/mobile-320-envelope.png`
+  - `qa/mobile-320-hero.png`
+  - `qa/mobile-390-rsvp.png`
+  - `qa/mobile-landscape-844x390.png`
+  - `qa/desktop-1280-after-mobile.png`
 - Comparison boards:
   - `qa/compare-envelope-final.png`
   - `qa/compare-hero.png`
+  - `qa/compare-hero-mobile-pass.png`
 - Focused interaction evidence:
   - `qa/implementation-map-modal-mobile.png`
   - `qa/implementation-rsvp-mobile.png`
@@ -58,9 +64,17 @@ The implementation keeps the source hierarchy and proportions: centered invitati
 - No actionable P0, P1, or P2 differences remained.
 - Residual P3: the source uses a larger close-cropped seal. The implementation keeps more embossed paper visible to support the botanical wedding direction.
 
+### Iteration 3: mobile-first pass
+
+- Finding [P2]: the opened hero was 19 px taller than the viewport in 844 x 390 landscape, so the first screen did not fit cleanly without a small scroll.
+- Finding [P2]: portrait tablets at 760–819 px received the landscape envelope asset and desktop two-column layouts.
+- Finding [P3]: all below-fold photography loaded eagerly on first visit.
+- Fix: added a compact landscape composition, separated the envelope orientation breakpoint from the layout breakpoint, moved desktop grids to 820 px, added safe-area spacing, widened mobile content slightly, and lazy-loaded below-fold images.
+- Post-fix evidence: the landscape hero is exactly 390 px tall at 844 x 390; 320, 360, 390, and 430 px portrait widths have no horizontal overflow; the 1280 x 720 desktop hero remains unchanged in hierarchy and balance.
+
 ## Browser verification
 
-- Viewports checked: 390 x 844, 1280 x 720, and 1280 x 800.
+- Viewports checked: 320 x 740, 360 x 800, 390 x 844, 430 x 932, 844 x 390, 1280 x 720, and 1280 x 800.
 - Primary interactions checked: envelope opening, personalized guest copy, music toggle rendering, map modal, map link targets, RSVP text field, guest-count select, drink checkbox, and contact link presence.
 - Browser console warnings and errors checked: none.
 

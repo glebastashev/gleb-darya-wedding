@@ -68,12 +68,12 @@ a {
 }
 
 .content-narrow {
-  width: min(100% - 40px, 820px);
+  width: min(100% - 32px, 820px);
   margin-inline: auto;
 }
 
 .content-wide {
-  width: min(100% - 40px, 1120px);
+  width: min(100% - 32px, 1120px);
   margin-inline: auto;
 }
 
@@ -215,7 +215,7 @@ a {
   position: fixed;
   z-index: 50;
   top: max(16px, env(safe-area-inset-top));
-  right: 16px;
+  right: max(16px, env(safe-area-inset-right));
   display: grid;
   place-items: center;
   width: 44px;
@@ -918,10 +918,21 @@ a {
   opacity: 1;
 }
 
-@media (min-width: 760px) {
+@media (orientation: landscape) and (min-width: 700px) {
   .envelope-image,
   .envelope-flap {
     background-image: var(--envelope-cover-desktop);
+  }
+}
+
+@media (min-width: 820px) {
+  .content-narrow,
+  .content-wide {
+    width: min(100% - 40px, var(--content-max, 820px));
+  }
+
+  .content-wide {
+    --content-max: 1120px;
   }
 
   .welcome-grid {
@@ -953,6 +964,61 @@ a {
 
   .rsvp-form {
     padding: 44px;
+  }
+}
+
+@media (max-width: 359px) {
+  .hero-copy h1 {
+    font-size: clamp(50px, 17vw, 58px);
+  }
+
+  .hero-date {
+    gap: 9px;
+  }
+
+  .hero-date i {
+    padding-inline: 11px;
+  }
+
+  .venue-actions .primary-button,
+  .venue-actions .secondary-button {
+    width: 100%;
+  }
+
+  .rsvp-form {
+    padding-inline: 20px;
+  }
+
+  .check-option {
+    padding-inline: 9px;
+    font-size: 16px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .hero-copy {
+    width: min(82%, 700px);
+    padding: 26px 56px 18px;
+  }
+
+  .hero-copy h1 {
+    margin: 6px 0 10px;
+    font-size: clamp(48px, 8.5vw, 72px);
+    line-height: 0.84;
+  }
+
+  .hero-date {
+    margin-bottom: 8px;
+  }
+
+  .guest-line {
+    margin-bottom: 8px;
+  }
+
+  .scroll-link {
+    width: 38px;
+    height: 38px;
+    margin-top: 14px;
   }
 }
 
