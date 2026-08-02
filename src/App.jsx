@@ -467,7 +467,8 @@ function AppContent({ musicOn, hasAudioFile, onToggleMusic, revealed }) {
     if (guest) body.append(FORM_FIELD.guest, guest);
 
     // no-cors: ответ Google отдаёт непрозрачным, прочитать его нельзя, но
-    // запись проходит. keepalive держит запрос живым, пока открывается Telegram.
+    // запись проходит. keepalive держит запрос живым, если гость сразу уйдёт
+    // со страницы.
     fetch(GOOGLE_FORM_ACTION, {
       method: "POST",
       mode: "no-cors",
@@ -475,21 +476,7 @@ function AppContent({ musicOn, hasAudioFile, onToggleMusic, revealed }) {
       keepalive: true,
     }).catch(() => {});
 
-    const message = [
-      "Ответ на приглашение Глеба и Дарьи",
-      `Гость: ${fullName}`,
-      `Количество гостей: ${guestCount}`,
-      `Напитки: ${drinks.length ? drinks.join(", ") : "не указано"}`,
-      guest ? `Персональная ссылка: ${guest}` : "",
-    ]
-      .filter(Boolean)
-      .join("\n");
-
     setSubmitted(true);
-    // Окно открываем сразу в обработчике клика, иначе браузер сочтёт его
-    // всплывающим и заблокирует.
-    const telegramUrl = `https://t.me/daryalukasheva?text=${encodeURIComponent(message)}`;
-    window.open(telegramUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -760,8 +747,7 @@ function AppContent({ musicOn, hasAudioFile, onToggleMusic, revealed }) {
             {submitted ? (
               <p className="success-message" role="status">
                 <CheckCircle size={20} weight="fill" />
-                Ответ записан. Осталось нажать отправку в Telegram, сообщение
-                уже готово.
+                Спасибо, мы приняли информацию и ждём нашей встречи!
               </p>
             ) : null}
           </form>
