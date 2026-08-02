@@ -72,6 +72,17 @@ The implementation keeps the source hierarchy and proportions: centered invitati
 - Fix: added a compact landscape composition, separated the envelope orientation breakpoint from the layout breakpoint, moved desktop grids to 820 px, added safe-area spacing, widened mobile content slightly, and lazy-loaded below-fold images.
 - Post-fix evidence: the landscape hero is exactly 390 px tall at 844 x 390; 320, 360, 390, and 430 px portrait widths have no horizontal overflow; the 1280 x 720 desktop hero remains unchanged in hierarchy and balance.
 
+### Iteration 4: stretched images, envelope exit, copy pass
+
+- Finding [P0]: every `<img>` rendered at its intrinsic pixel height. `width`/`height` attributes map to presentational hints, and with no author `height` declaration those hints won over `aspect-ratio`, so the couple portrait rendered 255 x 1280 instead of 255 x 340 and the venue collages and dress-code poster each ran past a full screen.
+- Finding [P1]: the opening envelope held a solid olive screen for 1.65 s and was then removed from the DOM in one frame, so the transition read as a hard cut rather than a flow into the hero.
+- Finding [P1]: the flap and the layer beneath it are the same photo of a closed envelope, and the base layer only started fading 0.9 s in — a second, closed envelope was visible under the opening flap for the whole animation.
+- Finding [P2]: hero copy sat over the garden foliage, where the dark green type has almost no contrast.
+- Finding [P2]: the dress-code section stated the palette three times — section heading, swatch row, and again inside the poster image.
+- Finding [P2]: the gift block used a form of "подарок" three times and asked for money directly.
+- Fix: added `height: auto` to the base `img` rule; capped the portrait, collages, and poster; moved the collages to two columns from 640 px and dropped the fixed 620 px desktop crop; cropped the duplicated top third of the poster; synchronised the envelope base fade with the flap lift over ~1.3 s and unmounted only after it is fully transparent; moved hero copy into the sky band and pinned the scroll arrow to the bottom of the hero; removed the decorative flourish, gift, and footer icons; rewrote the gift, RSVP, and schedule copy; trimmed the timeline to four points ending at 23:00.
+- Post-fix evidence: mobile page height 13148 px -> ~8300 px; no image exceeds 48 % of viewport height at 320, 375, or 1280 px; no horizontal overflow at 320 px; measured envelope exit shows the base at 32 % opacity by the time the flap reaches 38 degrees and 0 % before it passes 90 degrees.
+
 ## Browser verification
 
 - Viewports checked: 320 x 740, 360 x 800, 390 x 844, 430 x 932, 844 x 390, 1280 x 720, and 1280 x 800.

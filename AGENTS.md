@@ -15,3 +15,9 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - The wedding is for Gleb and Darya on 10 October 2026 at Wine Time Restaurant in Almaty. Welcome begins at 16:00 and the ceremony at 17:00.
 - Personal invitation links use a guest slug with a GitHub Pages fallback, for example `/anna-ivanova`, which redirects to `?guest=anna-ivanova`.
 - RSVP opens a prefilled Telegram message to Darya. Keep 2GIS, Google Maps, calendar download, alcohol preferences, and both couples' contact options working.
+- Never let a photo fill a whole screen. Every `<img>` needs an author `height` (the base rule sets `height: auto`), otherwise the `width`/`height` HTML attributes act as presentational hints and stretch the image to its intrinsic pixel height, which beats `aspect-ratio`.
+- The couple portrait stays a small framed print, not a hero image. The venue collages are never cropped — they are grids of tiles, so cap them by width and let the aspect ratio stay natural.
+- The envelope cover is a single photo of a *closed* envelope used for both the base layer and the flap. The base must dissolve while the flap lifts, or the guest sees a second closed envelope under the opening one. Opening runs ~1.3 s and flows straight into the hero, with no static hold and no hard cut.
+- Hero copy sits in the upper sky band of the garden image; on the greenery it is unreadable.
+- No decorative icons or flourishes in headings, cards, or the footer. Icons only where they label a control.
+- Copy is warm and short. Do not repeat a key word inside one block, and do not ask for money directly — the gift block is framed as "вместо цветов".

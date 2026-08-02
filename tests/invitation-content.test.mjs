@@ -18,8 +18,9 @@ test("keeps the required wedding details in the invitation", async () => {
   for (const requiredText of [
     "10 октября 2026",
     "Wine Time Restaurant",
-    "Сбор гостей и welcome",
+    "Сбор гостей",
     "Церемония",
+    "Окончание вечера",
     "Не пью",
     "15 августа",
     "daryalukasheva",
