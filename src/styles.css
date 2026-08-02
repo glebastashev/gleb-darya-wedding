@@ -470,7 +470,18 @@ a {
   aspect-ratio: 3 / 4;
   object-fit: cover;
   object-position: center 34%;
-  filter: saturate(0.88) contrast(1.05) brightness(1.06) sepia(0.12);
+  filter: saturate(0.92) contrast(1.02) brightness(1.09) sepia(0.12);
+}
+
+/* Тени поднимаем режимом screen, а не яркостью: он осветляет тёмные участки
+   заметно сильнее светлых, поэтому белая рубашка и бокалы не выбиваются. */
+.portrait-frame::after {
+  position: absolute;
+  inset: 12px;
+  background: rgba(126, 114, 92, 0.16);
+  content: "";
+  mix-blend-mode: screen;
+  pointer-events: none;
 }
 
 .welcome-copy {

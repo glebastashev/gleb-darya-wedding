@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   AppleLogo,
   ArrowDown,
@@ -33,6 +33,10 @@ const GOOGLE_MAPS_URL =
   "https://maps.app.goo.gl/hJ2YmmWSiUGt2dnw6?g_st=it";
 const YOUTUBE_TRACK_ID = "izGwDsrQ1eQ";
 const MUSIC_START_SECONDS = 48;
+// Скрытый YouTube-плеер не играет на iOS: Safari требует, чтобы play() был
+// вызван прямо в обработчике касания, и не воспроизводит медиа в невидимых
+// элементах. Локальный файл эти оба ограничения снимает.
+const MUSIC_FILE = `${import.meta.env.BASE_URL}music.mp3`;
 const ENVELOPE_EXIT_MS = 1_300;
 // Ответы уходят в Google Форму, привязанную к таблице. Секретов здесь нет:
 // адрес формы публичный, подделать или сломать через него нечего.
@@ -423,7 +427,7 @@ function MapChoice({ onClose }) {
   );
 }
 
-function AppContent({ musicOn, setMusicOn, revealed }) {
+function AppContent({ musicOn, hasAudioFile, onToggleMusic, revealed }) {
   const countdown = useCountdown();
   const [mapOpen, setMapOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -490,7 +494,7 @@ function AppContent({ musicOn, setMusicOn, revealed }) {
 
   return (
     <main className={`invitation ${revealed ? "is-revealed" : ""}`}>
-      {musicOn ? (
+      {musicOn && !hasAudioFile ? (
         <iframe
           className="music-frame"
           title="Careless Whisper, George Michael"
@@ -502,7 +506,7 @@ function AppContent({ musicOn, setMusicOn, revealed }) {
       <button
         className="floating-music"
         type="button"
-        onClick={() => setMusicOn((current) => !current)}
+        onClick={onToggleMusic}
         aria-label={musicOn ? "Выключить музыку" : "Включить музыку"}
       >
         {musicOn ? (
@@ -595,11 +599,7 @@ function AppContent({ musicOn, setMusicOn, revealed }) {
 
       <section className="schedule-section">
         <div className="content-narrow">
-          <SectionHeading
-            eyebrow="План дня"
-            title="Как всё пройдёт"
-            intro="Мы расписали день так, чтобы никуда не торопиться. Планируйте вечер до 23:00."
-          />
+          <SectionHeading eyebrow="План дня" title="Как всё пройдёт" />
           <div className="timeline">
             {schedule.map((item, index) => (
               <article className="timeline-item reveal" key={item.time}>
@@ -823,6 +823,31 @@ export function App() {
   const [opening, setOpening] = useState(false);
   const [opened, setOpened] = useState(false);
   const [musicOn, setMusicOn] = useState(false);
+  const [hasAudioFile, setHasAudioFile] = useState(false);
+  const audioRef = useRef(null);
+
+  // Переключаем звук синхронно внутри клика: асинхронный вызов play() iOS уже
+  // не считает пользовательским действием и глушит.
+  const setMusic = (next) => {
+    const audio = audioRef.current;
+    const usable = audio && !audio.error && audio.readyState > 0;
+
+    if (!usable) {
+      setMusicOn(next);
+      return;
+    }
+
+    if (next) {
+      audio
+        .play()
+        .then(() => setMusicOn(true))
+        .catch(() => setMusicOn(false));
+      return;
+    }
+
+    audio.pause();
+    setMusicOn(false);
+  };
 
   useEffect(() => {
     if (opened) return undefined;
@@ -837,15 +862,24 @@ export function App() {
     if (opening) return;
     window.scrollTo({ top: 0, behavior: "instant" });
     setOpening(true);
-    setMusicOn(true);
+    setMusic(true);
     window.setTimeout(() => setOpened(true), ENVELOPE_EXIT_MS);
   };
 
   return (
     <>
+      <audio
+        ref={audioRef}
+        src={MUSIC_FILE}
+        loop
+        preload="auto"
+        onLoadedMetadata={() => setHasAudioFile(true)}
+        onError={() => setHasAudioFile(false)}
+      />
       <AppContent
         musicOn={musicOn}
-        setMusicOn={setMusicOn}
+        hasAudioFile={hasAudioFile}
+        onToggleMusic={() => setMusic(!musicOn)}
         revealed={opening || opened}
       />
       {!opened ? <Envelope onOpen={openInvitation} opening={opening} /> : null}
