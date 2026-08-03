@@ -858,7 +858,7 @@ export function App() {
         ref={audioRef}
         src={MUSIC_FILE}
         loop
-        preload="auto"
+        preload="metadata"
         onLoadedMetadata={() => setHasAudioFile(true)}
         onError={() => setHasAudioFile(false)}
       />
